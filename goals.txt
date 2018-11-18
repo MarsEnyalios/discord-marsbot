@@ -1,0 +1,16 @@
+REMIND like flopbop
+WEATHER like flopbop
+CHOOSE like flopbop
+DEFINE like flopbop
+ROLE like flopbop
+
+bird, cat, dog, fox, bunny
+
+ROLL like dicefrand
+
+PRUNE like tat &/or mee6
+
+GREETING
+PREFIX
+HELP
+ABOUT
