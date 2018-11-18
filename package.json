@@ -1,0 +1,12 @@
+{
+	"name": "marsbot",
+	"version": "1.0.0",
+	"description": "A conglomeration of useful functions",
+	"main": "bot.js",
+	"author": "@Mars#2654",
+	"dependencies": {
+		"discord-graf": "^0.15.4",
+		"discord.js": "^11.4.2",
+		"winston": "^3.1.0"
+	}
+}
