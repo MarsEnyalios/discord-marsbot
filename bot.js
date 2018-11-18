@@ -3,6 +3,8 @@
  * @author MarsEnyalios
  * Purpose: creates a new instance of Marsbot
  *****************************************************************************/
+'use babel';  // idk why these are included but Gawdly uses them
+'use strict'; // in all their code, so just in case...
 
 // uses Babel & discord.js v10. https://www.npmjs.com/package.discord-graf
 const Bot = require('discord-graf').Bot; 
@@ -29,33 +31,8 @@ const bot = new Bot({
    version: about.version,
    token: auth.token,
    commandPrefix: prefix,
+   // an updateURL would go here
    clientOptions: {
       disableEveryone: true
    }
 });
-
-// this is where we declare our commands!
-let Commands = [
-   require('./commands/dice/roll'),
-   require('./commands/dice/max'),
-   require('./commands/dice/min'),
-];
-
-// obviously to catch errors
-process.on('uncaughtException', (err) => {
-   let errorMsg = err.stack.replace(new RegExp(`${__dirname}\/`, 'g'), './');
-
-   logger.error(errorMsg); // TODO: is this actually going to work
-});
-
-// register any modules here!
-// dice, information, utility? 
-
-// connect!
-bot.client.on('ready', token => {
-   let client = bot.client;
-   console.log(`Logged in as ${client.user.tag}!`);
-});
-
-// not sure what this does
-module.exports = bot; 
