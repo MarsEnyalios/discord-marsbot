@@ -11,8 +11,8 @@
 import { FriendlyError } from 'discord-graf';
 import bot from './bot';
 import DiceExpression from 'dice-expression-evaluator'; // TODO: install dependency
-var about = require('./package.json'); 
-import * as analytics from './util/analytics';          // TODO: make file
+var about = require('./about.json'); 
+//import * as analytics from './util/analytics';          // TODO: make file
 import config from './config';                          // TODO: make file
 
 import RollDiceCommand from './commands/dice/roll';
@@ -40,13 +40,14 @@ export const client = bot
       dice: DiceExpression
    })
 .createClient();
-
+/*
 // Set up command analytics, whatever that means lmaooo
 bot.dispatcher.on('commandRun', command => {
    analytics.sendEvent('Command', 'run', `${command.module}:${command.memberName}`);
 }).on('commandError', (command, err) => {
-   if(!(err instanceof FriendlyError)) analytics.sendException(err);
-});
+   if(!(err instanceof FriendlyError)) 
+      analytics.sendException(err);
+});*/
 
 // Exit on interrupt
 let interruptCount = 0;

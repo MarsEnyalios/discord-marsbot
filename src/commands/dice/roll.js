@@ -15,7 +15,7 @@ import { Command } from 'discord-graf';
 import DiceExpression from 'dice-expression-evaluator';
 
 // https://www.npmjs.com/package/common-tags
-import { oneLine } from 'common-tags';          // TODO: install dependencies
+import { oneLine } from 'common-tags';
 
 const pattern = /^(.+?)(?:(>{1,2}|<{1,2})\s*([0-9]+?))?\s*$/;
 

@@ -13,11 +13,13 @@ const Bot = require('discord-graf').Bot;
 var logger = require('winston'); 
 
 // BOT Variables
-const about = require('./package.json'); // bot info
+const about = require('./about.json'); // bot info
 const auth = require('./auth.json'); // bot token
 const prefix = '!'; // TODO: import from another file
 
-// configure logger settings... TODO: figure out what the hell this is doing
+// configure logger settings...
+// TODO: figure out how to use the inbuilt graf logger
+
 logger.remove(logger.transports.Console);
 logger.add(new logger.transports.Console, {
    colorze: true 

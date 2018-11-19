@@ -1,5 +1,7 @@
 /.git
 /cs
 /node_modules
+/marsbot-storage
 auth.json
 goals
+marsbot.log
