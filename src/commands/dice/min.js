@@ -6,7 +6,7 @@
  *****************************************************************************/
 
 const Graf = require('discord-graf');
-const Evaluator = require('dice-expression-evaluator') ;
+const DiceExpression = require('dice-expression-evaluator') ;
 
 class MinRollCommand extends Graf.Command {
    constructor(bot) {
@@ -24,7 +24,7 @@ class MinRollCommand extends Graf.Command {
    async run(message, args) {
       if(!args[0]) throw new Graf.CommandFormatError(this, message.guild);
       try {
-         const minRoll = new Evaluator.DiceExpression(args[0]).min();
+         const minRoll = new DiceExpression(args[0]).min();
 	 return `The minimum possible roll is **${minRoll}**.`;
       } catch(err) {
          return 'Invalid dice expression specified.';

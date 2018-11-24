@@ -6,7 +6,7 @@
  *****************************************************************************/
 
 const Graf = require('discord-graf');
-const Evaluator = require('dice-expression-evaluator'); // npm package
+const DiceExpression = require('dice-expression-evaluator'); // npm package
 const tags = require('common-tags');                         // npm package
 
 // detecting a dice expression
@@ -46,8 +46,9 @@ class RollDiceCommand extends Graf.Command {
       }
 
       try {
+
 	 const matches = fromPattern ? args : pattern.exec(args[0]);
-	 const dice = new Evaluator.DiceExpression(matches[1]);
+	 const dice = new DiceExpression(matches[1]);
 
          // Restrict the maximum dice count
 	 const totalDice = dice.dice.reduce((prev, die) => prev + (die.diceCount || 1), 0);

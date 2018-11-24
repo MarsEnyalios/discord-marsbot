@@ -5,14 +5,15 @@
  *****************************************************************************/
 
 // uses Babel & discord.js v10. https://www.npmjs.com/package.discord-graf
-const Bot = require('discord-graf').Bot; 
+const Bot = require('discord-graf').Bot;
+const Evaluator = require('dice-expression-evaluator');
 
 // https://www.digitalocean.com/community/tutorials/how-to-use-winston-to-log-node-js-applications
 var logger = require('winston'); 
 
 // BOT Variables
-const about = require('./package.json'); // bot info
-const auth = require('./auth.json'); // bot token
+const about = require('./about.json'); // bot info
+const auth = require('./../auth.json'); // bot token
 const prefix = '!'; // TODO: import from another file
 
 // configure logger settings...
@@ -54,8 +55,8 @@ bot.registerDefaults()        // TODO: what are graf defaults
    ])
    .registerCommands(Commands) // here's where commands are put in bot
    .registerEvalObjects({
-      version: version, 
-      dice: DiceExpression
+      version: about.version, 
+      dice: Evaluator.DiceExpression
    })
    .createClient();            // and here's where we make the bot
 

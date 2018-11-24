@@ -7,7 +7,7 @@
  *****************************************************************************/
 
 const Graf = require('discord-graf');
-const Evaluator = require('dice-expression-evaluator');
+const DiceExpression = require('dice-expression-evaluator');
 
 class MaxRollCommand extends Graf.Command {
    constructor(bot) {
@@ -26,7 +26,7 @@ class MaxRollCommand extends Graf.Command {
       if(!args[0]) throw new Graf.CommandFormatError(this, message.guild);
       
       try {
-	 const maxRoll = new Evaluator.DiceExpression(args[0]).max();
+	 const maxRoll = new DiceExpression(args[0]).max();
          return `The maximum possible roll is **${maxRoll}**.`;
       } catch(err) {
          return 'Invalid dice expression specified.';
