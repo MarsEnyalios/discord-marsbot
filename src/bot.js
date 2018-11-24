@@ -47,11 +47,16 @@ let Commands = [
    require('./commands/dice/min'),
 ];
 
-bot.registerDefaults()        // TODO: what are graf defaults
+bot.registerDefaultCommands({
+      about: false,           // going to add own about thing...
+      modRoles: false,        // don't need this; just have mod roles in server
+      blacklist: false        // not even sure what this does tbh
+   })
    .registerModules([         // these are command categories
-      ['dice', 'Dice'],
-      ['info', 'Info'],
-      ['util', 'Util']
+      ['animals', 'Animals']  // what it says on the tin
+      ['dice', 'Dice'],       // choose & dice
+      ['info', 'Info'],       // info and help
+      ['util', 'Util']        // channel managing things
    ])
    .registerCommands(Commands) // here's where commands are put in bot
    .registerEvalObjects({
