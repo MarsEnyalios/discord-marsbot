@@ -46,12 +46,18 @@ let Commands = [
    require('./commands/dice/min'),
 ];
 
-bot.registerModules([
-   ['dice', 'Dice'],
-]).registerDefaultCommands({
-   about: false
-}).registerCommands(Commands).createClient(); // here's where commands are 
-                                              // initialized into bot
+bot.registerDefaults()        // TODO: what are graf defaults
+   .registerModules([         // these are command categories
+      ['dice', 'Dice'],
+      ['info', 'Info'],
+      ['util', 'Util']
+   ])
+   .registerCommands(Commands) // here's where commands are put in bot
+   .registerEvalObjects({
+      version: version, 
+      dice: DiceExpression
+   })
+   .createClient();            // and here's where we make the bot
 
 bot.client.on('ready', token => {
    let client = bot.client;
