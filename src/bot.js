@@ -3,8 +3,6 @@
  * @author MarsEnyalios
  * Purpose: creates a new instance of Marsbot
  *****************************************************************************/
-'use babel';  // idk why these are included but Gawdly uses them
-'use strict'; // in all their code, so just in case...
 
 // uses Babel & discord.js v10. https://www.npmjs.com/package.discord-graf
 const Bot = require('discord-graf').Bot; 
@@ -13,12 +11,13 @@ const Bot = require('discord-graf').Bot;
 var logger = require('winston'); 
 
 // BOT Variables
-const about = require('./about.json'); // bot info
+const about = require('./package.json'); // bot info
 const auth = require('./auth.json'); // bot token
 const prefix = '!'; // TODO: import from another file
 
 // configure logger settings...
-// TODO: figure out how to use the inbuilt graf logger
+// TODO: figure out how to use the inbuilt graf logger if there is one
+//       or create my own
 
 logger.remove(logger.transports.Console);
 logger.add(new logger.transports.Console, {
@@ -38,3 +37,24 @@ const bot = new Bot({
       disableEveryone: true
    }
 });
+
+// include the files for each command. Commands have their own names customized
+// inside their files, so don't worry file names, just content
+let Commands = [
+   require('./commands/dice/roll'),
+   require('./commands/dice/max'),
+   require('./commands/dice/min'),
+];
+
+bot.registerModules([
+   ['dice', 'Dice'],
+]).registerDefaultCommands({
+   about: false
+}).registerCommands(Commands).createClient(); // here's where commands are 
+                                              // initialized into bot
+
+bot.client.on('ready', token => {
+   let client = bot.client;
+});
+
+module.exports = bot; // TODO: what's this

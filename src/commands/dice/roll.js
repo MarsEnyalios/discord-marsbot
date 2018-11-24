@@ -1,34 +1,27 @@
 /*****************************************************************************
  * FILE: roll.js
  * @author Gawdly
+ *         modified by MarsEnyalios for node.js
  * Summary: Contains logic needed for rolling dice. 
- *          Comments added by MarsEnyalios.
  *****************************************************************************/
 
-'use babel';
-'use strict';
+const Graf = require('discord-graf');
+const Evaluator = require('dice-expression-evaluator'); // npm package
+const tags = require('common-tags');                         // npm package
 
-// https://gawdl3y.github.io/discord-graf/identifiers.html
-import { Command } from 'discord-graf';
-
-// https://www.npmjs.com/package/dice-expression-evaluator
-import DiceExpression from 'dice-expression-evaluator';
-
-// https://www.npmjs.com/package/common-tags
-import { oneLine } from 'common-tags';
-
+// detecting a dice expression
 const pattern = /^(.+?)(?:(>{1,2}|<{1,2})\s*([0-9]+?))?\s*$/;
 
-export default class RollDiceCommand extends Command {
+class RollDiceCommand extends Graf.Command {
    constructor(bot) {
-   super(bot, {
-      name: 'roll',
-      aliases: ['dice', 'roll-dice', 'dice-roll', '(roll: xxxx)'],
-      module: 'dice',
-      memberName: 'roll',
-      description: 'Rolls specified dice.',
-      usage: 'roll [dice expression]',
-      details: oneLine`
+      super(bot, {
+         name: 'roll',
+         aliases: ['dice', 'roll-dice', 'dice-roll', 'rolldice', 'diceroll', '(roll: xxxx)'],
+         module: 'dice',
+         memberName: 'roll',
+         description: 'Rolls specified dice.', 
+         usage: 'roll [dice expression]',
+         details: tags.oneLine`
 	 Dice expressions can contain the standard representations of dice in text form (e.g. 2d20 is two 20-sided dice), with addition and subtraction allowed.
          You may also use a single \`>\` or \`<\` symbol at the end of the expression to add a target for the total dice roll - for example, \`2d20 + d15 > 35\`.
 	 You can count the number of successes using \`>>\` or \`<<\`, but only on a single dice expression - for example, \`4d30 >> 20\`.
@@ -39,10 +32,13 @@ export default class RollDiceCommand extends Command {
 	 patterns: [/\(\s*(?:roll|dice|rolldice|diceroll):\s*(.+?)(?:(>{1,2}|<{1,2})\s*([0-9]+?))?\s*\)/i]});
    }
    
+   // message = the message bot is reading from
+   // args = whatever follows (ex 'd20 + 2', 3 args there)
+   // fromPattern = ???
    async run(message, args, fromPattern) { // eslint-disable-line complexity
-      const firstArgIndex = fromPattern ? 1 : 0;
+      const firstArgIndex = fromPattern ? 1 : 0; // the 'd20' part
       if(!args[firstArgIndex]) {
-         args[firstArgIndex] = 'd20';
+         args[firstArgIndex] = 'd20';            // as shown here. d20 is default die
       } else {
 	 const rawNumber = parseInt(args[firstArgIndex]);
          
@@ -51,7 +47,7 @@ export default class RollDiceCommand extends Command {
 
       try {
 	 const matches = fromPattern ? args : pattern.exec(args[0]);
-	 const dice = new DiceExpression(matches[1]);
+	 const dice = new Evaluator.DiceExpression(matches[1]);
 
          // Restrict the maximum dice count
 	 const totalDice = dice.dice.reduce((prev, die) => prev + (die.diceCount || 1), 0);
@@ -70,7 +66,7 @@ export default class RollDiceCommand extends Command {
             if(matches[2] === '>' || matches[2] === '<') {
 	    const success = matches[2] === '>' ? rollResult.roll > target : rollResult.roll < target;
 	    const diceList = this.buildDiceList(rollResult, totalDice);
-	    response = oneLine`
+	    response = tags.oneLine`
 	       ${message.author} has **${success ? 'succeeded' : 'failed'}**.
 	       (Rolled ${rollResult.roll}, ${!success ? 'not' : ''} ${matches[2] === '>' ? 'greater' : 'less'} than ${target}${diceList ? `;   ${diceList}` : ''})
 	    `;
@@ -79,7 +75,7 @@ export default class RollDiceCommand extends Command {
 	    } else if(matches[2] === '>>' || matches[2] === '<<') {
 		if(rollResult.diceRaw.length !== 1) return { plain: `${message.author} tried to count successes with multiple dice expressions.` };
 		const successes = rollResult.diceRaw[0].reduce((prev, die) => prev + (matches[2] === '>>' ? die > target : die < target), 0);
-		response = oneLine`
+		response = tags.oneLine`
 		  ${message.author} has **${successes > 0 ? `succeeded ${successes} time${successes !== 1 ? 's' : ''}` : `failed`}**.
 		  ${rollResult.diceRaw[0].length > 1 && rollResult.diceRaw[0].length <= 100 ? `(${rollResult.diceRaw[0].join(',   ')})` : ''}
 		`;
@@ -111,3 +107,5 @@ export default class RollDiceCommand extends Command {
       return diceList;
    } // DICE LIST
 } // ROLL DICE COMMAND
+
+module.exports = RollDiceCommand; 

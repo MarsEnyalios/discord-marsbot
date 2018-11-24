@@ -1,16 +1,15 @@
 /*****************************************************************************
  * FILE: max.js
  * @author Gawdly
+ *         Modified by MarsEnyalios for node.js
  * Summary: contains logic needed for calculating maximum possible roll of a 
- *          dice expression. Comments added by MarsEnyalios
+ *          dice expression.
  *****************************************************************************/
-'use babel';
-'use strict';
 
-import { Command, CommandFormatError } from 'discord-graf';
-import DiceExpression from 'dice-expression-evaluator';
+const Graf = require('discord-graf');
+const Evaluator = require('dice-expression-evaluator');
 
-export default class MaxRollCommand extends Command {
+class MaxRollCommand extends Graf.Command {
    constructor(bot) {
       super(bot, {
          name: 'max-roll',
@@ -24,13 +23,15 @@ export default class MaxRollCommand extends Command {
    }
 
    async run(message, args) {
-      if(!args[0]) throw new CommandFormatError(this, message.guild);
+      if(!args[0]) throw new Graf.CommandFormatError(this, message.guild);
       
       try {
-	 const maxRoll = new DiceExpression(args[0]).max();
+	 const maxRoll = new Evaluator.DiceExpression(args[0]).max();
          return `The maximum possible roll is **${maxRoll}**.`;
       } catch(err) {
          return 'Invalid dice expression specified.';
       }
    } // ASYNC
 } // MAXROLLCOMMAND
+
+module.exports = MaxRollCommand; 

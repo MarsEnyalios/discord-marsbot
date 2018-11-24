@@ -2,16 +2,13 @@
  * FILE: min.js
  * @author Gawdly
  * Summary: Contains logic required for calculating minimum possible roll for 
- *          a dice expression. Comments added by MarsEnyalios.
+ *          a dice expression.
  *****************************************************************************/
 
-'use babel';
-'use strict';
+const Graf = require('discord-graf');
+const Evaluator = require('dice-expression-evaluator') ;
 
-import { Command, CommandFormatError } from 'discord-graf';
-import DiceExpression from 'dice-expression-evaluator';
-
-export default class MinRollCommand extends Command {
+class MinRollCommand extends Graf.Command {
    constructor(bot) {
       super(bot, {
          name: 'min-roll',
@@ -25,12 +22,14 @@ export default class MinRollCommand extends Command {
    }
 
    async run(message, args) {
-      if(!args[0]) throw new CommandFormatError(this, message.guild);
+      if(!args[0]) throw new Graf.CommandFormatError(this, message.guild);
       try {
-         const minRoll = new DiceExpression(args[0]).min();
+         const minRoll = new Evaluator.DiceExpression(args[0]).min();
 	 return `The minimum possible roll is **${minRoll}**.`;
       } catch(err) {
          return 'Invalid dice expression specified.';
       }
    } // ASYNC
 } // MINROLLCOMMAND
+
+module.exports = MinRollCommand;
